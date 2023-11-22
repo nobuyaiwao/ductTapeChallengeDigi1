@@ -34,12 +34,43 @@ getClientKey().then(async clientKey => {
             showPayButton: true,
 
             // Events
+            //onSubmit: (state, component) => {
+            //    if (state.isValid) {
+            //        makePayment(card.data);
+            //    }
+            //},
             onSubmit: (state, component) => {
                 if (state.isValid) {
-                    makePayment(card.data);
+                    let threeDSChallengeInd = document.getElementById('threeDSChallengeInd').value;
+                    console.log(threeDSChallengeInd);
+                    const threeDS2RequestDataObj = {
+                       "threeDS2RequestData": {
+                            "threeDSRequestorChallengeInd": threeDSChallengeInd
+                       }
+                    };
+                    const testcardData = {
+                        "paymentMethod" : card.data.paymentMethod,
+                        "origin" : card.data.origin
+                    };
+                    //makePayment(card.data,localizedStatementObject);
+                    //makePayment(testcardData,threeDS2RequestDataObj);
+                    makePayment(testcardData,threeDS2RequestDataObj)
+                        .then(response => {
+                            if (response.action) {
+                                console.log("Actoion Object");
+                                console.dir(response.action);
+                                console.log(response.action);
+                                card.handleAction(response.action);
+                            } else {
+                                console.lgo("Response without Action");
+                                console.log(response.action);
+                            }
+                        })
+                        .catch(error => {
+                            throw Error(error);
+                        });
                 }
             },
-
             onChange: (state, component) => {
                 // state.data;
                 // state.isValid;

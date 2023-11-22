@@ -26,6 +26,7 @@ module.exports = (() => {
     app.all('/sessions', (req, res) => sessions(res, req.body));
     app.all('/clientKeys', (req, res) => getClientKeys(res, req));
 
-    const port = process.env.PORT || 3000;
+    //const port = process.env.PORT || 3000;
+    const port = 3020;
     app.listen(port, () => console.log(`Listening on localhost:${port}`));
 })();

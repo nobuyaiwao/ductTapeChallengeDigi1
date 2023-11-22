@@ -11,35 +11,51 @@ function setReturnUrl(){
 const paymentMethodsConfig = {
     shopperReference: 'Checkout Components sample code test',
     reference: 'Checkout Components sample code test',
-    countryCode: 'NL',
+    countryCode: 'JP',
     amount: {
-        value: 1000,
-        currency: 'EUR'
+        value: 100,
+        currency: 'JPY'
     }
 };
 
 const paymentsDefaultConfig = {
     shopperReference: 'Checkout Components sample code test',
     reference: 'Checkout Components sample code test',
-    countryCode: 'NL',
+    countryCode: 'JP',
     channel: 'Web',
     returnUrl: setReturnUrl(),
-    amount: {
-        value: 1000,
-        currency: 'EUR'
+    //additionalData: {
+    //        allow3DS2 : false
+    //},
+    // challenge flow
+    //threeDS2RequestData: {
+    //    deviceChannel: 'browser',
+    //    threeDSCompInd: 'Y',
+    //    threeDSRequestorChallengeInd: '04'
+    //},
+    threeDS2RequestData: {
+        threeDSRequestorChallengeInd: '02'
     },
-    lineItems: [
-        {
-            id: '1',
-            description: 'Test Item 1',
-            amountExcludingTax: 10000,
-            amountIncludingTax: 11800,
-            taxAmount: 1800,
-            taxPercentage: 1800,
-            quantity: 1,
-            taxCategory: 'High'
-        }
-    ]
+    amount: {
+        value: 100,
+        currency: 'JPY'
+    },
+    billingAddress: {
+        city: 'City',
+        country: 'MX',
+        stateOrProvince: '',
+        houseNumberOrName: '住所２',
+        postalCode: '5454545',
+        street: '住所１'
+    },
+    deliveryAddress: {
+        city: 'Suginami-ku',
+        country: 'JP',
+        stateOrProvince: 'Tokyo',
+        houseNumberOrName: '401',
+        postalCode: '1660013',
+        street: '1-2-3 Seibisho'
+    }
 };
 
 // Generic POST Helper

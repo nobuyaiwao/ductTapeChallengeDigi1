@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm run devserver",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "devserver": "node ./server/node/index.js"
+        "devserver": "NODE_TLS_REJECT_UNAUTHORIZED='0' node ./server/node/index.js"
     },
     "repository": {
         "type": "git",
