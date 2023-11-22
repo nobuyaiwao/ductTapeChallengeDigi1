@@ -9,19 +9,17 @@ function setReturnUrl(){
 }
 
 const paymentMethodsConfig = {
-    shopperReference: 'Checkout Components sample code test',
-    reference: 'Checkout Components sample code test',
-    countryCode: 'JP',
+    reference: 'Duct Tape Challenge Test',
+    countryCode: 'SG',
     amount: {
-        value: 100,
-        currency: 'JPY'
+        value: 3000,
+        currency: 'SGD'
     }
 };
 
 const paymentsDefaultConfig = {
-    shopperReference: 'Checkout Components sample code test',
-    reference: 'Checkout Components sample code test',
-    countryCode: 'JP',
+    reference: 'Duct Tape Challenge Test',
+    countryCode: 'SG',
     channel: 'Web',
     returnUrl: setReturnUrl(),
     //additionalData: {
@@ -37,8 +35,8 @@ const paymentsDefaultConfig = {
         threeDSRequestorChallengeInd: '02'
     },
     amount: {
-        value: 100,
-        currency: 'JPY'
+        value: 3000,
+        currency: 'SGD'
     },
     billingAddress: {
         city: 'City',
