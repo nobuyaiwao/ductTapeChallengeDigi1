@@ -1,6 +1,6 @@
 # Adyen Web sample code
 
-![Adyen Web Sample Code](screenshot.png)
+![Duct Tape Challenge!](ducttape.png)
 
 > ⚠️ **This repository is for demo purposes only**
 
