@@ -1,4 +1,4 @@
-# Adyen Web sample code
+# Duct Tape Challenge!
 
 ![Duct Tape Challenge!](ducttape.png)
 
