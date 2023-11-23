@@ -9,20 +9,9 @@
 To run this project, **put** `.env` file, which is shared in our MM channel, on your project's root. 
 
 ## Installation
-### Running the PHP Server
-
-Navigate to the root of the project and run the `start.sh` script:
-
-```
-$ cd adyen-components-js-sample-code
-$ ./start.sh
-```
-
-A PHP server will start on `http://localhost:3000`.
-
 ### Running the Node.js Server
 
-If preferred, you can run a Node.js server instead.
+~~If preferred, you can run a Node.js server instead.~~ In fact, it works only on a Node.js, don't try PHP.
 To do this, navigate to the root of the project, install the dependencies (only the first time) and run the start script:
 
 ```
