@@ -1,0 +1,35 @@
+<span id="urlparam"></span>
+<!--div class="text-area">URL param for this page is"<span id="urlparam"></span>"</div-->
+<div class="text-area">Checking the payment result..."</div>
+
+<script src="../utils.js"></script>
+<script src="../demo.js"></script>
+
+<script>
+
+var url = location.search;
+document.getElementById("urlparam").innerHTML = url;
+//console.log(url);
+const redirectResult = url.replace('?redirectResult=','');
+
+let redirectResultObj = {
+   details: {
+        redirectResult: redirectResult
+   }
+};
+
+console.log("redirectResultObj : " + redirectResultObj);
+console.log(redirectResultObj);
+makeDetails(redirectResultObj)
+    .then(response => {
+        if (response) {
+            console.log("Response of /details");
+            console.log(response);
+            let paymentResult = response.resultCode ;
+            alert("Result : " + paymentResult)
+        } 
+    })
+    .catch(error => {
+        throw Error(error);
+    });
+</script>

@@ -34,41 +34,127 @@ getClientKey().then(async clientKey => {
             showPayButton: true,
 
             // Events
-            //onSubmit: (state, component) => {
-            //    if (state.isValid) {
-            //        makePayment(card.data);
-            //    }
-            //},
             onSubmit: (state, component) => {
                 if (state.isValid) {
-                    let threeDSChallengeInd = document.getElementById('threeDSChallengeInd').value;
-                    console.log(threeDSChallengeInd);
-                    const threeDS2RequestDataObj = {
-                       "threeDS2RequestData": {
-                            "threeDSRequestorChallengeInd": threeDSChallengeInd
+                    // 1st Risk check to determin challenge indicator
+                    // Custom Routing Flag for 1st call
+                    const customRoutingFlagObj = {
+                       "additionalData": {
+                            "customRoutingFlag": "forRiskCalc"
                        }
                     };
+                    let testCaseName = document.getElementById('testCase').value;
+                    console.log('Selected Test Case : ' + testCaseName);
+                    let deliveryAddressObj = {};
+                    switch(testCaseName){
+                        case 'challenge':
+                            deliveryAddressObj = {
+                               city: 'Shibuya-ku',
+                               country: 'JP',
+                               stateOrProvince: 'Tokyo',
+                               houseNumberOrName: 'Shibuya Scramble Square 39F',
+                               postalCode: '1506139',
+                               street: '2-24-12 Shibuya'
+                            };
+                        break;
+                        case 'default':
+                            deliveryAddressObj = {
+                               city: 'Singapore',
+                               country: 'SG',
+                               stateOrProvince: '',
+                               houseNumberOrName: '#10-22 Funan',
+                               postalCode: '179097',
+                               street: '109 North Bridge Road'
+                            };
+                            // Change PAN to frictionless 
+                            //card.data.paymentMethod.encryptedCardNumber = 'test_4111111111111111';
+                            //console.log(card.data.paymentMethod.encryptedCardNumber);
+                        break;
+                    }
                     const testcardData = {
                         "paymentMethod" : card.data.paymentMethod,
-                        "origin" : card.data.origin
+                        //"paymentMethod" : {
+                        //     "type": "scheme",
+                        //     "encryptedCardNumber": "test_4917 6100 0000 0000",
+                        //     "encryptedExpiryMonth": "test_03",
+                        //     "encryptedExpiryYear": "test_2030",
+                        //     "encryptedSecurityCode": "test_737",
+                        //     "holderName": "one"
+                        //},
+                        "origin" : card.data.origin,
+                        "deliveryAddress" : deliveryAddressObj
                     };
-                    //makePayment(card.data,localizedStatementObject);
-                    //makePayment(testcardData,threeDS2RequestDataObj);
-                    makePayment(testcardData,threeDS2RequestDataObj)
+                    makePaymentForRisk(testcardData,customRoutingFlagObj)
                         .then(response => {
-                            if (response.action) {
-                                console.log("Actoion Object");
-                                console.dir(response.action);
-                                console.log(response.action);
-                                card.handleAction(response.action);
-                            } else {
-                                console.lgo("Response without Action");
-                                console.log(response.action);
+                            console.log("Respone for Risk Check");
+                            console.log(response);
+                            let threeDSChallengeInd = '02';
+                            if (response.fraudResult.results){
+                                const fraudResultArr = response.fraudResult.results ;
+                                fraudResultArr.forEach(function(fraudResult,index){
+                                    let ruleName = fraudResult.name ;
+                                    let riskScore = fraudResult.accountScore ;
+                                    //console.log(ruleName);
+                                    //console.log(ruleName + ' - ' + riskScore);
+                                    if ( ruleName == 'BillingAddressDeliveryAddress' && riskScore > 0 ){
+                                        console.log(ruleName + ' - ' + riskScore);
+                                        alert(ruleName + ' - ' + riskScore + ' \nThis shopper needs to be challenged!');
+                                        // Challenge Indicator
+                                        threeDSChallengeInd = '04';
+                                    } 
+                                });
                             }
+                            // 2nd /payments call
+                            const threeDS2RequestDataObj = {
+                               "threeDS2RequestData": {
+                                    "threeDSRequestorChallengeInd": threeDSChallengeInd
+                               }
+                            };
+                            console.log("threeDSChallengeInd : " + threeDSChallengeInd);
+                            let testcardData2 = testcardData ;
+                            if (testCaseName == 'default'){
+                                testcardData2.paymentMethod.encryptedCardNumber = 'test_5201 2815 0512 9736';
+                            }
+                            makePayment(testcardData2,threeDS2RequestDataObj)
+                                .then(response => {
+                                    if (response.action) {
+                                        console.log("Actoion Object");
+                                        console.log(response.action);
+                                        console.dir(response.action);
+                                        card.handleAction(response.action);
+                                    } else {
+                                        console.log("Response without Action");
+                                    }
+                                })
+                                .catch(error => {
+                                    throw Error(error);
+                                });
+                            //if (response.action) {
+                            //    card.handleAction(response.action);
+                            //} else {
+                            //    console.log("Response without Action");
+                            //}
                         })
                         .catch(error => {
                             throw Error(error);
                         });
+
+                    ////makePayment(card.data,localizedStatementObject);
+                    ////makePayment(testcardData,threeDS2RequestDataObj);
+                    //makePayment(testcardData,threeDS2RequestDataObj,customRoutingFlagObj)
+                    //    .then(response => {
+                    //        if (response.action) {
+                    //            console.log("Actoion Object");
+                    //            console.log(response.action);
+                    //            console.dir(response.action);
+                    //            card.handleAction(response.action);
+                    //        } else {
+                    //            console.log("Response without Action");
+                    //        }
+                    //    })
+                    //    .catch(error => {
+                    //        throw Error(error);
+                    //    });
                 }
             },
             onChange: (state, component) => {

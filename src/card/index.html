@@ -13,13 +13,18 @@
         <div class="main">
             <div class="checkout-container">
                 <a href="../">Back</a>
-
                 <h1>Card Component</h1>
-                <div>
+                <label for="testCase">Choose a test case:</label>
+                    <select name="testCase" id="testCase">
+                        <option value="default">General Shopper</option>
+                        <option value="challenge">Risky Shopper - Challenge</option>
+                        <option value="nochallenge">Safe Shopper - No challenge</option>
+                    </select>
+                <!--0div>
                     <label> 3DS Challenge Indicator :
                         <input type="text" id="threeDSChallengeInd" size="2" value="02">
                     </label>
-                </div>
+                </div-->
                 <div class="payment-method">
                     <div id="card-container" class="payment-method__container">
                         <!-- Card Component will be rendered here -->
@@ -45,7 +50,7 @@
                 <h2>Instruction to test</h2>
                 <button class="copy-sample-code" aria-label="Copy sample code"></button>
             </div>
-            <pre class="source-code"><code>Test Card Number : 4166 6766 6766 6746
+            <pre class="source-code"><code>Test Card Number : 5454 5454 5454 5454
 
             </code></pre>
 
